@@ -44,6 +44,25 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>javadoc</id>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <doclint>none</doclint>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -55,6 +74,7 @@
     </properties>
 
     <dependencies>
+
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -47,7 +47,6 @@ public class TerminalOutputManager {
      * Prints an important message to the terminal.
      *
      * @param string The message to be printed.
-     * @throws IOException if an I/O error occurs while writing to the output stream.
      */
     public void printlnImportantMessage(String string) {
         try {
@@ -69,7 +68,6 @@ public class TerminalOutputManager {
      * Writes a string to the output stream followed by a newline character.
      *
      * @param string The string to be written.
-     * @throws IOException if an I/O error occurs while writing to the output stream.
      */
     public void printlnToTheOutputStream(String string)
     {

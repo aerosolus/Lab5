@@ -25,7 +25,6 @@ public final class CollectionCreator {
      *
      * @return An initialized CollectionManager instance.
      * @throws NullPointerException if the file path is null.
-     * @throws IOException if there's an issue reading the file.
      */
     public static CollectionManager load() {
         String filePath = System.getenv("STORAGE_FILE");

@@ -50,7 +50,6 @@ public class TerminalInputManager {
      *
      * @return A TerminalInputValidator object representing the parsed command.
      * @throws NoSuchElementException if the end of the input stream is reached unexpectedly.
-     * @throws Exception if any other error occurs during parsing.
      */
     public TerminalInputValidator readTerminal() {
         try {

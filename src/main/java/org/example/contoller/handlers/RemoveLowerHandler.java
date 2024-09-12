@@ -40,11 +40,16 @@ public class RemoveLowerHandler implements Handler {
      */
     @Override
     public void handle(String args) throws NotCorrectException {
-        if (args == "") {
-            this.humanBeing = Main.terminalManager.createHumanBeing();
-            CreateCommand();
+        if (!Main.script) {
+            if (args == "") {
+                this.humanBeing = Main.terminalManager.createHumanBeing();
+                CreateCommand();
+            } else {
+                throw new NotCorrectException();
+            }
         } else {
-            throw new NotCorrectException();
+            this.humanBeing = Main.terminalManager.readHumanBeing();
+            CreateCommand();
         }
     }
 

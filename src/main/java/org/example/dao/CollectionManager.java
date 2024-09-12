@@ -156,7 +156,7 @@ public class CollectionManager {
      * @param humanBeing The HumanBeing object to compare against.
      */
     public void removeLower(HumanBeing humanBeing) {
-        System.out.println(humanBeing.getName());
+        //System.out.println(humanBeing.getName());
         humanBeingCollection.entrySet().removeIf(e -> e.getValue().compareTo(humanBeing) < 0);
     }
 
@@ -236,7 +236,6 @@ public class CollectionManager {
     public void showCollection() {
         if (humanBeingCollection == null || humanBeingCollection.isEmpty()) {
             System.out.println("LinkedHashMap is empty or null.");
-            return;
         } else {
             for (Map.Entry<Integer, HumanBeing> entry : humanBeingCollection.entrySet()) {
                 System.out.printf("  %s : %s%n", entry.getKey(), entry.getValue());

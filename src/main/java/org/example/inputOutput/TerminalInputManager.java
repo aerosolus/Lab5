@@ -4,9 +4,7 @@ import org.example.Main;
 import org.example.exceptions.InvalidInputException;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -115,7 +113,7 @@ public class TerminalInputManager {
                 if (readLine.trim().contains(" ")) {
                     //scriptBox.add(readLine.split(" "));
                     scriptBox.add(readLine.trim().split(" "));
-                    System.out.println(Arrays.toString(readLine.split(" ")));
+                    //System.out.println(Arrays.toString(readLine.split(" ")));
                 } else {
                     scriptBox.add(new String[]{readLine, ""});
                 }

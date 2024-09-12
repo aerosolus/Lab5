@@ -9,11 +9,8 @@ import org.example.contoller.CommandRequestManager;
 import org.example.exceptions.InvalidInputException;
 import org.example.utility.ServerEntryPoint;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static org.example.Main.script;
 import static org.example.Main.terminalOutputManager;
 
 /**
@@ -143,6 +140,12 @@ public class TerminalManager {
         }
     }
 
+    /**
+     * Updates an existing HumanBeing object based on input script.
+     *
+     * @param id The ID of the HumanBeing object to update.
+     * @return An updated HumanBeing object.
+     */
     public HumanBeing readUpdateHumanBeing(int id) {
         try {
             return
@@ -186,6 +189,12 @@ public class TerminalManager {
         }
     }
 
+    /**
+     * Reads an integer value from the script box and returns it.
+     * If the input is invalid, it prints an error message and returns null.
+     *
+     * @return Integer representing the value read from the script box, or null if input is invalid.
+     */
     public Integer readHumanBeingKey() {
         try {
             return Integer.valueOf(inputManager.scriptBox.pop()[0]);
@@ -195,6 +204,11 @@ public class TerminalManager {
         return null;
     }
 
+    /**
+     * Creates a new HumanBeing object based on input script.
+     *
+     * @return A newly created HumanBeing object.
+     */
     public HumanBeing readHumanBeing() {
         try {
             return
@@ -217,6 +231,11 @@ public class TerminalManager {
         }
     }
 
+    /**
+     * Creates a new Car object based on input script.
+     *
+     * @return A newly created Car object.
+     */
     public Car readCar() {
         try {
             return

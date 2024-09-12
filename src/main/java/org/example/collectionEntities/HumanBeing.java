@@ -326,7 +326,7 @@ public class HumanBeing implements Comparable <HumanBeing> {
      * as the first argument is less than, equal to, or greater than the second.
      */
     public int compareTo(HumanBeing o) {
-        System.out.println(name + " " + o.name+ " " + this.name.compareTo(o.name));
+        //System.out.println(name + " " + o.name+ " " + this.name.compareTo(o.name));
         return this.name.toLowerCase().compareTo(o.name.toLowerCase());
     }
 

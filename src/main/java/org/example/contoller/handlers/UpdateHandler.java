@@ -1,14 +1,17 @@
 package org.example.contoller.handlers;
 
-import org.example.inputOutput.HumanBeingFieldValuesGetter;
+
 import org.example.Main;
 import org.example.collectionEntities.HumanBeing;
 import org.example.contoller.Command;
 import org.example.contoller.Handler;
 import org.example.contoller.commands.UpdateCommand;
 import org.example.exceptions.NotCorrectException;
+import org.example.inputOutput.HumanBeingFieldValuesGetter;
 import org.example.inputOutput.TerminalInputManager;
 import org.example.utility.ServerEntryPoint;
+
+import static org.example.Main.terminalManager;
 import static org.example.Main.terminalOutputManager;
 
 /**
@@ -57,25 +60,35 @@ public class UpdateHandler implements Handler {
      */
     @Override
     public void handle(String args) throws NotCorrectException {
-        if (args != "") {
-            try {
-                id = Integer.parseInt(args);
-            } catch (Exception e) {
+        if (!Main.script) {
+            if (args != "") {
+                try {
+                    id = Integer.parseInt(args);
+                } catch (Exception e) {
+                    throw new NotCorrectException();
+                }
+                if (ServerEntryPoint.collectionManager.containsId(id)) {
+                    HumanBeingFieldValuesGetter humanBeingFieldValuesGetter =
+                            new HumanBeingFieldValuesGetter(new TerminalInputManager(System.in, terminalOutputManager),
+                                    terminalOutputManager);
+                    this.key = humanBeingFieldValuesGetter.getHumanBeingKey();
+                    this.humanBeing = terminalManager.updateHumanBeing(id);
+                    CreateCommand();
+                } else {
+                    terminalOutputManager.println("В коллекции отсутствует элемент с указанным значением поля id!");
+                }
+            } else {
                 throw new NotCorrectException();
             }
+        } else {
+            id = Integer.parseInt(args);
             if (ServerEntryPoint.collectionManager.containsId(id)) {
-                HumanBeingFieldValuesGetter humanBeingFieldValuesGetter =
-                        new HumanBeingFieldValuesGetter(new TerminalInputManager(System.in, terminalOutputManager),
-                                terminalOutputManager);
-                this.key = humanBeingFieldValuesGetter.getHumanBeingKey();
-                this.humanBeing = Main.terminalManager.updateHumanBeing(id);
+                this.key = terminalManager.readHumanBeingKey();
+                this.humanBeing = terminalManager.readUpdateHumanBeing(id);
                 CreateCommand();
-            }
-            else {
+            } else {
                 terminalOutputManager.println("В коллекции отсутствует элемент с указанным значением поля id!");
             }
-        } else {
-            throw new NotCorrectException();
         }
     }
 

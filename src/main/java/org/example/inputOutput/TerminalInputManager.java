@@ -1,10 +1,12 @@
 package org.example.inputOutput;
 
 import org.example.Main;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import org.example.exceptions.InvalidInputException;
+
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -37,7 +39,7 @@ public class TerminalInputManager {
     /**
      * Constructs a TerminalInputManager with the given input stream and output manager.
      *
-     * @param inputStream Input stream for reading from the terminal or script file.
+     * @param inputStream   Input stream for reading from the terminal or script file.
      * @param outputManager Output manager for handling terminal output.
      */
     public TerminalInputManager(InputStream inputStream, TerminalOutputManager outputManager) {
@@ -58,23 +60,30 @@ public class TerminalInputManager {
             if (readLine.trim().contains(" ")) {
                 return
                         new TerminalInputValidator(readLine.trim().split(" ")[0],
-                                readLine.trim().split(" ")[readLine.trim().split(" ").length-1]);
-            }
-            else {
+                                readLine.trim().split(" ")[readLine.trim().split(" ").length - 1]);
+            } else {
                 return
                         new TerminalInputValidator(readLine.trim().split(" ")[0], "");
             }
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             outputManager.println("Строка по некой причине не была прочитана!");
             outputManager.println("Вероятно использовано сочетание Ctrl + D, которое приводит к завершению работы программы.");
             System.exit(1);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             outputManager.printlnWriteCommand();
         }
         return null; //for better program failing, bad parsing -> end;
     }
+
+    /**
+     * Field for setting maximum recursion depth
+     */
+    private static final int recursion_depth = 100;
+
+    /**
+     * Field for counting current recursion depth
+     */
+    private static int recursion_count = 0;
 
     /**
      * Reads a script file and stores parsed commands in the scriptBox queue.
@@ -82,6 +91,10 @@ public class TerminalInputManager {
      * @param scriptPath Path to the script file to read.
      */
     public void readScript(String scriptPath) {
+        if (recursion_count++ >= recursion_depth) {
+            outputManager.println("Некорректный ввод данных скрипта.");
+            throw new InvalidInputException();
+        }
         Main.script = true;
         File scriptFile = new File(scriptPath);
         Scanner scriptScanner = null;
@@ -94,8 +107,15 @@ public class TerminalInputManager {
         if (scriptScanner != null) {
             while (scriptScanner.hasNextLine()) {
                 String readLine = scriptScanner.nextLine();
-                if (readLine.contains(" ")) {
-                    scriptBox.add(readLine.split(" "));
+                if (readLine.isEmpty()) {
+                    outputManager.println("Некорректный ввод данных скрипта.");
+                    throw new InvalidInputException();
+                }
+                //System.out.println(readLine);
+                if (readLine.trim().contains(" ")) {
+                    //scriptBox.add(readLine.split(" "));
+                    scriptBox.add(readLine.trim().split(" "));
+                    System.out.println(Arrays.toString(readLine.split(" ")));
                 } else {
                     scriptBox.add(new String[]{readLine, ""});
                 }
@@ -109,13 +129,11 @@ public class TerminalInputManager {
      * @return The next line of input as a string, or null if the end of the input stream is reached unexpectedly.
      * @throws NoSuchElementException if the end of the input stream is reached unexpectedly.
      */
-    public String getNextLine()
-    {
+    public String getNextLine() {
         try {
             Scanner scanners = new Scanner(inputStream);
             return scanners.nextLine();
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             outputManager.println("Строка по некой причине не была прочитана!");
             outputManager.println("Вероятно использовано сочетание Ctrl + D, которое приводит к завершению работы программы.");
             System.exit(1);

@@ -31,9 +31,10 @@ public final class CollectionCreator {
         CSVReader csvReader = new CSVReader();
         CollectionManager collectionManager;
         if (filePath == null) {
-            filePath = "data.csv"; //works on any PC
-            //filePath = "абвгд.csv"; //some other cases
+            //filePath = "data.csv"; //works on any PC
+            filePath = "абвгд.csv"; //some other cases
             System.out.println("Не удалось получить имя файла для загрузки коллекции.");
+            System.out.println("Загружена коллекция из файла по умолчанию.");
         }
         //System.out.println("Storage file: " + filePath);
         try {

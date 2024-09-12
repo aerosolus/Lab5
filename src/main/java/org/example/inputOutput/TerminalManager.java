@@ -4,9 +4,16 @@ import org.example.Main;
 import org.example.collectionEntities.Car;
 import org.example.collectionEntities.Coordinates;
 import org.example.collectionEntities.HumanBeing;
+import org.example.collectionEntities.WeaponType;
 import org.example.contoller.CommandRequestManager;
+import org.example.exceptions.InvalidInputException;
 import org.example.utility.ServerEntryPoint;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+
+import static org.example.Main.script;
 import static org.example.Main.terminalOutputManager;
 
 /**
@@ -81,24 +88,28 @@ public class TerminalManager {
      * @return A newly created HumanBeing object.
      */
     public HumanBeing createHumanBeing() {
-        HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
-                new TerminalInputManager(System.in, terminalOutputManager),
-                terminalOutputManager);
-        return
-                new HumanBeing.HumanBeingBuilder(ServerEntryPoint.collectionManager.generateId(),
-                        humanBeingFieldValuesGetter.getHumanBeingName(),
-                        new Coordinates(new Coordinates.CoordinatesBuilder(
-                                humanBeingFieldValuesGetter.getHumanBeingCoordinateX(),
-                                humanBeingFieldValuesGetter.getHumanBeingCoordinateY())
-                        ),
-                        humanBeingFieldValuesGetter.getHumanBeingHasToothpick(),
-                        humanBeingFieldValuesGetter.getHumanBeingSoundtrackName(),
-                        humanBeingFieldValuesGetter.getHumanBeingImpactSpeed(),
-                        humanBeingFieldValuesGetter.getHumanBeingMinutesOfWaiting())
-                        .setRealHero(humanBeingFieldValuesGetter.getHumanBeingRealHero())
-                        .setWeaponType(humanBeingFieldValuesGetter.getHumanBeingWeaponType())
-                        .setCar(createCar())
-                        .build();
+        try {
+            HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
+                    new TerminalInputManager(System.in, terminalOutputManager),
+                    terminalOutputManager);
+            return
+                    new HumanBeing.HumanBeingBuilder(ServerEntryPoint.collectionManager.generateId(),
+                            humanBeingFieldValuesGetter.getHumanBeingName(),
+                            new Coordinates(new Coordinates.CoordinatesBuilder(
+                                    humanBeingFieldValuesGetter.getHumanBeingCoordinateX(),
+                                    humanBeingFieldValuesGetter.getHumanBeingCoordinateY())
+                            ),
+                            humanBeingFieldValuesGetter.getHumanBeingHasToothpick(),
+                            humanBeingFieldValuesGetter.getHumanBeingSoundtrackName(),
+                            humanBeingFieldValuesGetter.getHumanBeingImpactSpeed(),
+                            humanBeingFieldValuesGetter.getHumanBeingMinutesOfWaiting())
+                            .setRealHero(humanBeingFieldValuesGetter.getHumanBeingRealHero())
+                            .setWeaponType(humanBeingFieldValuesGetter.getHumanBeingWeaponType())
+                            .setCar(createCar())
+                            .build();
+        } catch (InvalidInputException e) {
+            throw new InvalidInputException();
+        }
     }
 
     /**
@@ -108,24 +119,50 @@ public class TerminalManager {
      * @return An updated HumanBeing object.
      */
     public HumanBeing updateHumanBeing(int id) {
-        HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
-                new TerminalInputManager(System.in, terminalOutputManager),
-                terminalOutputManager);
-        return
-                new HumanBeing.HumanBeingBuilder(id,
-                        humanBeingFieldValuesGetter.getHumanBeingName(),
-                        new Coordinates(new Coordinates.CoordinatesBuilder(
-                                humanBeingFieldValuesGetter.getHumanBeingCoordinateX(),
-                                humanBeingFieldValuesGetter.getHumanBeingCoordinateY())
-                        ),
-                        humanBeingFieldValuesGetter.getHumanBeingHasToothpick(),
-                        humanBeingFieldValuesGetter.getHumanBeingSoundtrackName(),
-                        humanBeingFieldValuesGetter.getHumanBeingImpactSpeed(),
-                        humanBeingFieldValuesGetter.getHumanBeingMinutesOfWaiting())
-                        .setRealHero(humanBeingFieldValuesGetter.getHumanBeingRealHero())
-                        .setWeaponType(humanBeingFieldValuesGetter.getHumanBeingWeaponType())
-                        .setCar(createCar())
-                        .build();
+        try {
+            HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
+                    new TerminalInputManager(System.in, terminalOutputManager),
+                    terminalOutputManager);
+            return
+                    new HumanBeing.HumanBeingBuilder(id,
+                            humanBeingFieldValuesGetter.getHumanBeingName(),
+                            new Coordinates(new Coordinates.CoordinatesBuilder(
+                                    humanBeingFieldValuesGetter.getHumanBeingCoordinateX(),
+                                    humanBeingFieldValuesGetter.getHumanBeingCoordinateY())
+                            ),
+                            humanBeingFieldValuesGetter.getHumanBeingHasToothpick(),
+                            humanBeingFieldValuesGetter.getHumanBeingSoundtrackName(),
+                            humanBeingFieldValuesGetter.getHumanBeingImpactSpeed(),
+                            humanBeingFieldValuesGetter.getHumanBeingMinutesOfWaiting())
+                            .setRealHero(humanBeingFieldValuesGetter.getHumanBeingRealHero())
+                            .setWeaponType(humanBeingFieldValuesGetter.getHumanBeingWeaponType())
+                            .setCar(createCar())
+                            .build();
+        } catch (InvalidInputException e) {
+            throw new InvalidInputException();
+        }
+    }
+
+    public HumanBeing readUpdateHumanBeing(int id) {
+        try {
+            return
+                    new HumanBeing.HumanBeingBuilder(id,
+                            (inputManager.scriptBox.pop()[0]),
+                            new Coordinates(new Coordinates.CoordinatesBuilder(
+                                    Double.parseDouble(inputManager.scriptBox.pop()[0]),
+                                    Long.parseLong(inputManager.scriptBox.pop()[0]))
+                            ),
+                            Boolean.parseBoolean(inputManager.scriptBox.pop()[0]),
+                            inputManager.scriptBox.pop()[0],
+                            Long.parseLong(inputManager.scriptBox.pop()[0]),
+                            Double.parseDouble(inputManager.scriptBox.pop()[0]))
+                            .setRealHero(Boolean.parseBoolean(inputManager.scriptBox.pop()[0]))
+                            .setWeaponType(WeaponType.valueOf(inputManager.scriptBox.pop()[0]))
+                            .setCar(readCar())
+                            .build();
+        } catch (InvalidInputException | NoSuchElementException e) {
+            throw new InvalidInputException();
+        }
     }
 
     /**
@@ -134,13 +171,61 @@ public class TerminalManager {
      * @return A newly created Car object.
      */
     public Car createCar() {
-        HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
-                new TerminalInputManager(System.in, terminalOutputManager),
-                terminalOutputManager);
-        return
-                new Car.CarBuilder(
-                        humanBeingFieldValuesGetter.getHumanBeingCarName())
-                        .setCool(humanBeingFieldValuesGetter.getHumanBeingCarIsCool())
-                        .build();
+        try {
+
+            HumanBeingFieldValuesGetter humanBeingFieldValuesGetter = new HumanBeingFieldValuesGetter(
+                    new TerminalInputManager(System.in, terminalOutputManager),
+                    terminalOutputManager);
+            return
+                    new Car.CarBuilder(
+                            humanBeingFieldValuesGetter.getHumanBeingCarName())
+                            .setCool(humanBeingFieldValuesGetter.getHumanBeingCarIsCool())
+                            .build();
+        } catch (InvalidInputException e) {
+            throw new InvalidInputException();
+        }
+    }
+
+    public Integer readHumanBeingKey() {
+        try {
+            return Integer.valueOf(inputManager.scriptBox.pop()[0]);
+        } catch (InvalidInputException | NoSuchElementException | NumberFormatException e) {
+            outputManager.printlnNotCorrectInput();
+        }
+        return null;
+    }
+
+    public HumanBeing readHumanBeing() {
+        try {
+            return
+                    new HumanBeing.HumanBeingBuilder(ServerEntryPoint.collectionManager.generateId(),
+                            (inputManager.scriptBox.pop()[0]),
+                            new Coordinates(new Coordinates.CoordinatesBuilder(
+                                    Double.parseDouble(inputManager.scriptBox.pop()[0]),
+                                    Long.parseLong(inputManager.scriptBox.pop()[0]))
+                            ),
+                            Boolean.parseBoolean(inputManager.scriptBox.pop()[0]),
+                            inputManager.scriptBox.pop()[0],
+                            Long.parseLong(inputManager.scriptBox.pop()[0]),
+                            Double.parseDouble(inputManager.scriptBox.pop()[0]))
+                            .setRealHero(Boolean.parseBoolean(inputManager.scriptBox.pop()[0]))
+                            .setWeaponType(WeaponType.valueOf(inputManager.scriptBox.pop()[0]))
+                            .setCar(readCar())
+                            .build();
+        } catch (InvalidInputException | NoSuchElementException e) {
+            throw new InvalidInputException();
+        }
+    }
+
+    public Car readCar() {
+        try {
+            return
+                    new Car.CarBuilder(
+                            inputManager.scriptBox.pop()[0])
+                            .setCool(Boolean.parseBoolean(inputManager.scriptBox.pop()[0]))
+                            .build();
+        } catch (InvalidInputException | NoSuchElementException e) {
+            throw new InvalidInputException();
+        }
     }
 }
